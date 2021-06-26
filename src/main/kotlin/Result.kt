@@ -3,11 +3,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Result(
         val average: Double,
-        val visits: MutableList<Time>
+        val visits: MutableList<Visit>
 )
 @Serializable
-data class Time (
+data class Visit (
         val time: Long,
         val offset: Double,
+        val maybeAttack: Boolean,
         val IPs: Map<String,Int>
         )

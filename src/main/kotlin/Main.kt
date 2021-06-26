@@ -48,7 +48,7 @@ object Main {
         println("Exporting full-data...")
         val export = Result(average, mutableListOf())
         rawResult.stream().forEachOrdered {
-            export.visits.add(Time(it.first,it.second.size-average, frequencyOfListElements(it.second)))
+            export.visits.add(Visit(it.first,it.second.size-average,it.second.size-average>rate, frequencyOfListElements(it.second)))
         }
         val f = File("bsexport-"+SimpleDateFormat("dd-MM-yyyy_hh-mm-ss").format(Date())+".json")
         f.createNewFile()
