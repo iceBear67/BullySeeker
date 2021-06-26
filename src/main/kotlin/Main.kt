@@ -23,15 +23,15 @@ object Main {
             println("Null or empty text.")
             exitProcess(0)
         }
-        val unit = arg[1].toInt()
-        val rate = arg[2].toInt()
+        val unit = arg[1].toDouble()
+        val rate = arg[2].toDouble()
         if(unit<=0 || rate<0){
             println("Illegal unit/rate. unit/rate > 0")
             exitProcess(0)
         }
         val reader = Reader(content)
         var rawResult = reader.read(unit)
-        val average = rawResult.stream().map { e->e.second.size }.filter{ it!=0 }.collect(Collectors.toList()).average()
+        val average = rawResult.stream().map { e->e.second.size }.collect(Collectors.toList()).average()
         var reportedResult = mutableListOf<Pair<Long,Double>>()
         rawResult = rawResult.filter { e->e.second.size - average > 0 }
         rawResult.filter { e->e.second.size-average>rate }.forEach { reportedResult.add(Pair(it.first,it.second.size-average))}
@@ -39,16 +39,16 @@ object Main {
         rawResult = rawResult.asReversed()
         reportedResult = reportedResult.sortedWith(compareBy{it.second}).toMutableList()
         reportedResult = reportedResult.asReversed()
-        reportedResult.stream().forEachOrdered {
-            println("Time: ${Date(it.first)} Offset: ${it.second}")
+        rawResult.stream().forEachOrdered {
+            println("Time: ${Date(it.first)} Offset: ${it.second.size-average} Requests:${it.second.size}")
         }
         if(reportedResult.size==0){
             println("Nothing found.")
         }
         println("Exporting full-data...")
-        val export = Result(average, mutableListOf())
+        val export = Result(average, unit,mutableListOf())
         rawResult.stream().forEachOrdered {
-            export.visits.add(Visit(it.first,it.second.size-average,it.second.size-average>rate, frequencyOfListElements(it.second)))
+            export.visits.add(Visit(it.first,it.second.size-average,it.second.size-average>rate,it.second.size, frequencyOfListElements(it.second)))
         }
         val f = File("bsexport-"+SimpleDateFormat("dd-MM-yyyy_hh-mm-ss").format(Date())+".json")
         f.createNewFile()

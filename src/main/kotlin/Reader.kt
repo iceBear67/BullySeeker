@@ -17,12 +17,12 @@ class Reader(text: String) {
             println("Can't parse log. Is it default nginx log format?")
         }
     }
-    fun read(distance: Int): List<Pair<Long,List<String>>>{
+    fun read(distance: Double): List<Pair<Long,List<String>>>{
         val result = mutableListOf<Pair<Long,List<String>>>()
         var start = 0L;
         var cache = mutableListOf<String>()
         seq.forEach{
-            if(it.second - start > distance * 1000 * 60){
+            if(it.second - start > distance){
                 // new starts.
                     if(start!=0L){
                         result.add(Pair(start,cache))
