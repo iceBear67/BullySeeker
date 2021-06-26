@@ -4,4 +4,6 @@ Find traffic-flooding from standard nginx log.
 `java -jar ./BullySeeker-1.0-SNAPSHOT-all.jar nginx.log <unit> <rate>`  
 Explaination:  
 `Unit` -> a unit time  
-`Rate` -> how much offset should be treated as attack and println?
+`Rate` -> how much offset should be treated as attack and println?  
+
+Java 11 Required.
